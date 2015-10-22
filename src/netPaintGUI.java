@@ -21,7 +21,7 @@ public class netPaintGUI extends JFrame {
 		this.setLocation(0,0);
 		layoutGUI();
 	}
-	
+
 	private JColorChooser colors;
 	private JRadioButton  line, rectangel, oval, image;
 	private ButtonGroup   shapechoices;
@@ -84,8 +84,8 @@ public class netPaintGUI extends JFrame {
 		//canvus.
 		canvus.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		canvus.setVisible(true);
-		
-		
+
+
 		//panel.add(scrollPanel);
 		panel.add(colors);
 		panel.add(canvus);
@@ -96,10 +96,10 @@ public class netPaintGUI extends JFrame {
 		this.add(panel);
 
 		this.setVisible(true);
-		
+
 	}
 	public static void main(String [] args){
 		new netPaintGUI();
 	}
-	
+
 }
