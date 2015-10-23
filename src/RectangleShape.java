@@ -10,23 +10,28 @@ public class RectangleShape extends PaintObject {
 
 	Rectangle rectangle;
 
-	public RectangleShape(int xCoordinate, int yCoordinate, int width, int height) {
-		super(xCoordinate, yCoordinate, width, height);
-		rectangle = new Rectangle(width, height, xCoordinate, yCoordinate);
+	public RectangleShape(int initialX, int initialY, int finalX, int finalY) {
+		super(initialX, initialY, finalX, finalY);
+		rectangle = new Rectangle(getCurrentWidth(), getCurrentHeight(), initialX, initialY);
 	}
 	
-	// draws rectangle at a new location and with a new size
-	public void draw(int nextX, int nextY, int nextWidth, int nextHeight, Graphics2D g2) {
-		super.setLocation(nextX, nextY);
-		super.setDimensions(nextWidth, nextHeight);
-		g2.draw(rectangle);
-		g2.fill(rectangle);		// fills with rectangle's current color
+	@Override
+	public Rectangle getPicture() {
+		return rectangle;
+	}
+
+	@Override
+	protected void updatePicture() {
+		rectangle.setLocation(getInitialX(), getInitialY());
+		rectangle.setSize(getCurrentWidth(), getCurrentHeight());
 	}
 	
-	// draws rectangle using values created at instantiation
-	public void draw(Graphics2D g2) {
-		g2.draw(rectangle);
-		g2.fill(rectangle);		// fills with rectangle's current color
+	// testing
+	public static void main(String[] args) {
+		RectangleShape rect = new RectangleShape(0,0, 2,2);
+		rect.setDimensions(10, 10);
+		Rectangle rectUnder = rect.getPicture();
+		System.out.println(rectUnder.getWidth());
 	}
 }
 
