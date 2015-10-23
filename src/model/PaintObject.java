@@ -1,3 +1,13 @@
+/*
+ *	Authors: Michael Carolin and Jacob Groh 
+ * Date: 10/23/15
+ * Class: CSC 335
+ * Description: Contains methods for the initial
+ * and final x, y coordinates, the Current width
+ * and height of the PaintObject, and contains
+ * two abstract methods getPicture() and 
+ * updatePicture(). 
+ */
 package model;
 import java.awt.Color;
 import java.awt.Graphics2D;

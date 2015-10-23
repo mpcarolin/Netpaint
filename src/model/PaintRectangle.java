@@ -1,3 +1,12 @@
+/*
+ *	Authors: Michael Carolin and Jacob Groh 
+ * Date: 10/23/15
+ * Class: CSC 335
+ * Description: PaintRectangle extends PaintObject, 
+ * implementing its abstract methods getPicture()
+ * and update Picture in order to get correct
+ * coordinates necessary to draw the Rectangle.
+ */
 package model;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;

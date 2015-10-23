@@ -1,3 +1,14 @@
+/*
+ *	Authors: Michael Carolin and Jacob Groh 
+ * Date: 10/23/15
+ * Class: CSC 335
+ * Description: Serializable which means it can be
+ * saved and reloaded after being closed. Creates a 
+ * private ArrayList of Paint Object with methods to
+ * get the index, add PaintObject, ask it the list Contains 
+ * the PaintObject, asks if empty, asks the size, 
+ * and made the list Iterable .
+ */
 package model;
 /*
  * Description: an ArrayList wrapper class for Paint Objects that implements serializable
@@ -9,7 +20,7 @@ import java.util.Iterator;
 
 public class PaintObjectList implements Serializable, Iterable<PaintObject> {
 	
-	ArrayList<PaintObject> pictures = new ArrayList<PaintObject>();
+	private ArrayList<PaintObject> pictures = new ArrayList<PaintObject>();
 	
 	public PaintObject get(int index) {
 		return pictures.get(index);

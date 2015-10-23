@@ -1,3 +1,13 @@
+/*
+ *	Authors: Michael Carolin and Jacob Groh 
+ * Date: 10/23/15
+ * Class: CSC 335
+ * Description: Paint Image extends PaintObject, 
+ * implementing its abstract methods getPicture()
+ * and update Picture in order to get correct
+ * coordinates necessary to draw the Image.
+ */
+
 package model;
 import java.awt.Image;
 

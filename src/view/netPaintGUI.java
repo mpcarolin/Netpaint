@@ -1,3 +1,11 @@
+/*
+ *	Authors: Michael Carolin and Jacob Groh 
+ * Date: 10/23/15
+ * Class: CSC 335
+ * Description: a JFrame subclass that manages a PaintObjectList and prints
+ * it in the JScroll Panel. Includes numerous gui elements such as
+ * JPanel, JRadioButtons, JColorChooser,...ect
+ */
 package view;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -31,7 +39,7 @@ public class netPaintGUI extends JFrame {
 	
 	private Graphics2D g2;
 	private PaintObjectList pictures;
-	
+	//Constructor
 	public netPaintGUI(){
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setSize(1000,630);
@@ -45,6 +53,7 @@ public class netPaintGUI extends JFrame {
 	private JPanel panel;
 	private DrawingPanel scrollPanel;
 	private JScrollPane canvus;
+	//Sets up the GUI to contain a JScrollPanel, ButtonGroup, and JColorChooser
 	private void layoutGUI() {
 		panel= new JPanel(null);
 		panel.setSize(1000, 630);
@@ -80,17 +89,10 @@ public class netPaintGUI extends JFrame {
 		scrollPanel.setPreferredSize(new Dimension(2000,2000));
 		scrollPanel.setVisible(true);
 		scrollPanel.setBackground(Color.WHITE);
+		
 		canvus= new JScrollPane(scrollPanel);
-		
-		
-		// This is the Thing that goes  inside the canvas
-		//JTextArea testArea= new JTextArea();
-		//testArea.setVisible(true);
-		//scrollPanel.add(testArea);
-
 		canvus.setSize(990, 340);
 		canvus.setLocation(0, 0);
-
 		canvus.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		canvus.setVisible(true);
 		
@@ -104,12 +106,13 @@ public class netPaintGUI extends JFrame {
 
 		this.setVisible(true);
 	}
-	
+	// Calls repaint on a list of picture objects
 	public void drawObjects(PaintObjectList pictures) {
 		scrollPanel.setPictures(pictures);
 		scrollPanel.repaint();
 	}
-	
+	// inner class that contains the paintComponent method that draws 
+	// the images onto the JScrollPanel
 	class DrawingPanel extends JPanel {
 		
 		private PaintObjectList pictures;
@@ -134,7 +137,7 @@ public class netPaintGUI extends JFrame {
 			}
 		}
 	}
-
+	// Programs main that add five PaintObjects with thier dimensions and prints them
 	public static void main(String [] args){
 		PaintObjectList objectList= new PaintObjectList();
 		objectList.add(new PaintLine(220,10,320,100));
