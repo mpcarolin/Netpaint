@@ -6,7 +6,7 @@ import javax.imageio.ImageIO;
 
 public class PaintImage extends PaintObject {
 	
-	Image image;
+	private Image image;
 
 	public PaintImage(int initialX, int initialY, int finalX, int finalY, String filepath) {
 		super(initialX, initialY, finalX, finalY);

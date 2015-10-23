@@ -8,7 +8,7 @@ import java.awt.geom.Rectangle2D;
 
 public class RectangleShape extends PaintObject {
 
-	Rectangle rectangle;
+	private Rectangle rectangle;
 
 	public RectangleShape(int initialX, int initialY, int finalX, int finalY) {
 		super(initialX, initialY, finalX, finalY);

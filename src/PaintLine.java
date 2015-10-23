@@ -2,7 +2,7 @@ import java.awt.geom.Line2D;
 
 public class PaintLine extends PaintObject {
 
-	Line2D line;
+	private Line2D line;
 	
 	public PaintLine(int initialX, int initialY, int finalX, int finalY) {
 		super(initialX, initialY, finalX, finalY);
