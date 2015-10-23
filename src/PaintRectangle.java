@@ -6,11 +6,11 @@ import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
-public class RectangleShape extends PaintObject {
+public class PaintRectangle extends PaintObject {
 
 	private Rectangle rectangle;
 
-	public RectangleShape(int initialX, int initialY, int finalX, int finalY) {
+	public PaintRectangle(int initialX, int initialY, int finalX, int finalY) {
 		super(initialX, initialY, finalX, finalY);
 		rectangle = new Rectangle(getCurrentWidth(), getCurrentHeight(), initialX, initialY);
 	}
@@ -28,7 +28,7 @@ public class RectangleShape extends PaintObject {
 	
 	// testing
 	public static void main(String[] args) {
-		RectangleShape rect = new RectangleShape(0,0, 2,2);
+		PaintRectangle rect = new PaintRectangle(0,0, 2,2);
 		rect.setDimensions(10, 10);
 		Rectangle rectUnder = rect.getPicture();
 		System.out.println(rectUnder.getWidth());

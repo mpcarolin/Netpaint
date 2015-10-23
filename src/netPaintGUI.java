@@ -91,7 +91,7 @@ public class netPaintGUI extends JFrame {
 	public static void main(String [] args){
 		new netPaintGUI();
 		PaintObjectList objectList= new PaintObjectList();
-		objectlist.add(new PaintLine(10,10,50,20));
+		objectList.add(new PaintLine(10,10,50,20));
 		objectList.add(new PaintRectangle(60,60,100,80));
 		objectList.add(new PaintOval(100,100,150,150));
 		try {

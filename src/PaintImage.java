@@ -1,20 +1,13 @@
 import java.awt.Image;
-import java.io.File;
-import java.io.IOException;
 
-import javax.imageio.ImageIO;
 
 public class PaintImage extends PaintObject {
 	
-	private Image image;
+	Image image;
 
-	public PaintImage(int initialX, int initialY, int finalX, int finalY, String filepath) {
+	public PaintImage(int initialX, int initialY, int finalX, int finalY, Image image) {
 		super(initialX, initialY, finalX, finalY);
-		try {
-			image = ImageIO.read(new File(filepath));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+
 	}
 
 	@Override
