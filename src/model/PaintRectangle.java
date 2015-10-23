@@ -1,3 +1,4 @@
+package model;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Shape;
@@ -12,7 +13,7 @@ public class PaintRectangle extends PaintObject {
 
 	public PaintRectangle(int initialX, int initialY, int finalX, int finalY) {
 		super(initialX, initialY, finalX, finalY);
-		rectangle = new Rectangle(getCurrentWidth(), getCurrentHeight(), initialX, initialY);
+		rectangle = new Rectangle(initialX, initialY, getCurrentWidth(), getCurrentHeight());
 	}
 	
 	@Override

@@ -1,3 +1,4 @@
+package model;
 import java.awt.geom.Ellipse2D;
 
 public class PaintOval extends PaintObject {

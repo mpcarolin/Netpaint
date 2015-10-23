@@ -1,3 +1,4 @@
+package model;
 import java.awt.geom.Line2D;
 
 public class PaintLine extends PaintObject {

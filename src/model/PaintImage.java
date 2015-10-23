@@ -1,3 +1,4 @@
+package model;
 import java.awt.Image;
 
 
@@ -7,7 +8,8 @@ public class PaintImage extends PaintObject {
 
 	public PaintImage(int initialX, int initialY, int finalX, int finalY, Image image) {
 		super(initialX, initialY, finalX, finalY);
-
+		this.image = image;
+		updatePicture();
 	}
 
 	@Override

@@ -1,3 +1,4 @@
+package model;
 /*
  * Description: an ArrayList wrapper class for Paint Objects that implements serializable
  * for saving to disk and sending the data over a network for the NetPaint application.
@@ -47,7 +48,9 @@ public class PaintObjectList implements Serializable, Iterable<PaintObject> {
 
 		@Override
 		public PaintObject next() {
-				return hasNext() ? PaintObjectList.this.get(currentIndex) : null;
+				PaintObject obj = PaintObjectList.this.get(currentIndex);
+				currentIndex++;
+				return obj;
 		}
 		
 	}
