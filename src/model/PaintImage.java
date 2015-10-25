@@ -37,14 +37,6 @@ public class PaintImage extends PaintObject {
 		int finalY = getFinalY();
 		int width = Math.abs(getCurrentWidth());
 		int height = Math.abs(getCurrentHeight());
-
-		if (width == 0) {
-			width = 1;
-		}
-		
-		if (height == 0) {
-			height = 1;
-		}
 		
 		if (finalX - initX < 0) {
 			int temp = finalX;
@@ -57,9 +49,6 @@ public class PaintImage extends PaintObject {
 			setFinalY(initY);
 			setInitialY(temp);
 		}
-
-		image = image.getScaledInstance(getCurrentWidth(), getCurrentHeight(), Image.SCALE_DEFAULT);
-		
 	}
 }
 

@@ -338,7 +338,9 @@ public class netPaintGUI extends JFrame {
 				Object underObject = picture.getPicture();
 				g2.setColor(picture.getColor());
 				if (underObject instanceof Image) {
-					g2.drawImage((Image)underObject, picture.getInitialX(), picture.getInitialY(), null);
+					int initX = picture.getInitialX();
+					g2.drawImage((Image)underObject, picture.getInitialX(), picture.getInitialY(), 
+											picture.getCurrentWidth(), picture.getCurrentHeight(),  null);
 				} else if (underObject instanceof Line2D) {
 					g2.draw((Shape)underObject);
 				} else if (underObject instanceof Shape) {
