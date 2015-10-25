@@ -12,8 +12,9 @@ package model;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Shape;
+import java.io.Serializable;
 
-public abstract class PaintObject {
+public abstract class PaintObject implements Serializable {
 	
 	private int initialX, initialY;						
 	private int finalX, finalY;
@@ -53,11 +54,29 @@ public abstract class PaintObject {
 	}
 	
 	public int getCurrentWidth() {
-		return finalX - initialX;
+		return finalX - initialX ;
 	}
 	
 	public Color getColor() {
 		return color;
+	}
+	
+	public void setInitialX(int newX) {
+		initialX = newX;
+	}
+	
+	public void setInitialY(int newY) {
+		initialY = newY;
+	}
+	
+	public void setFinalX(int newX) {
+		finalX = newX;
+		updatePicture();
+	}
+
+	public void setFinalY(int newY) {
+		finalY = newY;
+		updatePicture();
 	}
 
 	public void setDimensions(int newWidth, int newHeight) {

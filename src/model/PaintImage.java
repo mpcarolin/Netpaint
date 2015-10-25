@@ -10,6 +10,7 @@
 
 package model;
 import java.awt.Image;
+import java.awt.image.BufferedImage;
 
 
 public class PaintImage extends PaintObject {
@@ -30,8 +31,35 @@ public class PaintImage extends PaintObject {
 	@Override
 	protected void updatePicture() {
 		// use other scale constants for different algorithms for scaling (some prioritize speed)
-		image = image.getScaledInstance(
-						getCurrentWidth(), getCurrentHeight(),Image.SCALE_DEFAULT);
+		int initX = getInitialX();
+		int initY = getInitialY();
+		int finalX = getFinalX();
+		int finalY = getFinalY();
+		int width = Math.abs(getCurrentWidth());
+		int height = Math.abs(getCurrentHeight());
+
+		if (width == 0) {
+			width = 1;
+		}
+		
+		if (height == 0) {
+			height = 1;
+		}
+		
+		if (finalX - initX < 0) {
+			int temp = finalX;
+			setFinalX(initX);
+			setInitialX(temp);
+		}
+		
+		if (finalY - initY < 0) {
+			int temp = finalY;
+			setFinalY(initY);
+			setInitialY(temp);
+		}
+
+		image = image.getScaledInstance(getCurrentWidth(), getCurrentHeight(), Image.SCALE_DEFAULT);
+		
 	}
 }
 

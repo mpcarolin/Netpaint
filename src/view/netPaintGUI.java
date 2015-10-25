@@ -18,6 +18,9 @@ import java.awt.List;
 import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.geom.Line2D;
 import java.io.File;
 import java.io.IOException;
@@ -42,13 +45,23 @@ import model.PaintRectangle;
 public class netPaintGUI extends JFrame {
 	
 	private Graphics2D g2;
-	private PaintObjectList pictures;
-	//Constructor
+	private PaintObjectList pictures = new PaintObjectList();
+	private Image imageToDraw;
+	private String currentPictureString = "";
+
+
 	public netPaintGUI(){
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setSize(1000,630);
 		this.setLocation(0,0);
 		layoutGUI();
+		
+		// obtain the picture for the image option
+		try {
+			imageToDraw = ImageIO.read(new File("./Image/Funny-Memes.jpg"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private JColorChooser colors;
@@ -58,27 +71,40 @@ public class netPaintGUI extends JFrame {
 	private DrawingPanel scrollPanel;
 	private JScrollPane canvus;
 	private JButton  colorChooser;
+	private PaintObject currentPicture;
+	private boolean hasClickedOnce = false;
+	private boolean skipFirst = false;
+
 	//Sets up the GUI to contain a JScrollPanel, ButtonGroup, and JColorChooser
 	private void layoutGUI() {
-		panel= new JPanel(new BorderLayout());
-		//panel.setSize(1000, 600);
-		//panel.setLocation(0, 0);
-		southPanel= new JPanel(null);
+		panel			= new JPanel(new BorderLayout());
+		southPanel	= new JPanel(null);
 		southPanel.setLocation(0, 0);
-		line= new JRadioButton("Line");
-		rectangel= new JRadioButton("Rectangel");
-		oval= new JRadioButton("Oval");
-		image= new JRadioButton("Image");
+
+		// shapes and image options 
+		line			= new JRadioButton("Line");
+		rectangel = new JRadioButton("Rectangel");
+		oval			= new JRadioButton("Oval");
+		image		= new JRadioButton("Image");
+		
+		// set action commands so listener knows which button is selected
+		line.setActionCommand("line");
+		rectangel.setActionCommand("rectangle");
+		oval.setActionCommand("oval");
+		image.setActionCommand("image");
+		
+		// set action listeners
+		line.addActionListener(new pictureButtonListener());
+		rectangel.addActionListener(new pictureButtonListener());
+		oval.addActionListener(new pictureButtonListener());
+		image.addActionListener(new pictureButtonListener());
+		
+		
+		
+		// color chooser 
 		colorChooser= new JButton("Change Colors");
-//		line.setSize(70, 40);
-//		line.setLocation(345, 340);
-//		rectangel.setSize(100, 40);
-//		rectangel.setLocation(405, 340);
-//		oval.setSize(70, 40);
-//		oval.setLocation(505, 340);
-//		image.setSize(100, 40);
-//		image.setLocation(565, 340);
-		//add button listeners and actions...
+
+		// add button listeners and actions
 		line.setSize(70, 40);
 		line.setLocation(215, 20);
 		rectangel.setSize(100, 40);
@@ -92,42 +118,32 @@ public class netPaintGUI extends JFrame {
 		colorChooser.setVisible(true);
 
 		colorChooser.addActionListener(new colorButtonListener());
-		shapechoices= new ButtonGroup();
+		shapechoices = new ButtonGroup();
 		shapechoices.add(line);
 		shapechoices.add(rectangel);
 		shapechoices.add(oval);
 		shapechoices.add(image);
 
-//		colors= new JColorChooser();
-//		colors.setSize(1000, 320);
-//		colors.setLocation(0, 70);
-//		colors.setVisible(true);
-		
-		//southPanel.add(colors);
 		southPanel.add(line);
 		southPanel.add(rectangel);
 		southPanel.add(oval);
 		southPanel.add(image);
 		southPanel.add(colorChooser);
 		southPanel.setPreferredSize(new Dimension(1000,100));
-		
-		scrollPanel = new DrawingPanel();
+		scrollPanel = new DrawingPanel(pictures);
 		scrollPanel.setSize(1000, 380);
 		scrollPanel.setLocation(0, 0);
 		scrollPanel.setPreferredSize(new Dimension(2000,2000));
 		scrollPanel.setVisible(true);
 		scrollPanel.setBackground(Color.WHITE);
 		
-		canvus= new JScrollPane(scrollPanel);
+		canvus = new JScrollPane(scrollPanel);
 		canvus.setSize(990, 340);
 
 		canvus.setLocation(0, 0);
-		canvus.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		canvus.setVisible(true);
-		
-		//panel.add(colors);
-		//panel.add(canvus);
-
+		scrollPanel.addMouseListener(new mouseLocationListener());
+		scrollPanel.addMouseMotionListener(new motionListener());
 		southPanel.setVisible(true);
 		panel.add(BorderLayout.SOUTH,southPanel);
 		panel.add(BorderLayout.CENTER,canvus);
@@ -135,28 +151,181 @@ public class netPaintGUI extends JFrame {
 
 		this.setVisible(true);
 	}
+	
 	private class colorButtonListener implements ActionListener{
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			Color color= scrollPanel.getBackground();
+			Color color = scrollPanel.getBackground();
 			System.out.print(color.toString());
 
-			color= JColorChooser.showDialog(null, "Choose a Color", color );
+			color = JColorChooser.showDialog(null, "Choose a Color", color );
 			System.out.print(color.toString());
+		}
+	}
+	
+	private class pictureButtonListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			String receivedCommand = e.getActionCommand();
+			currentPictureString = receivedCommand;
+		}
+	}
+	
+	private class mouseClickedListener implements MouseListener {
+
+		@Override
+		public void mouseClicked(MouseEvent e) {
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+			if (skipFirst) {
+				hasClickedOnce = false;
+			}
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			skipFirst = true;
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseExited(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
 		}
 		
 	}
+	
+	private class mouseLocationListener implements MouseListener {
+		private int initX;
+		private int initY;
+
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			if(e.getClickCount()%3!=0){
+				if(e.getClickCount()%2==1&& !hasClickedOnce){
+					hasClickedOnce = true;
+				    initX = e.getX();
+				    initY = e.getY();
+				    // determine which shape or image to draw
+					switch (currentPictureString) {
+						case "line":
+							currentPicture = new PaintLine(initX, initY, initX, initY);
+							break;
+						case "oval":
+							currentPicture = new PaintOval(initX, initY, initX, initY);
+							break;
+						case "image":
+							currentPicture = new PaintImage(initX, initY, initX, initY, imageToDraw);
+							break;
+						default: 	// if a rectangle or an unsupported option, draw a rectangle
+							// reverse initial and final x when inverting the resize
+							
+							currentPicture = new PaintRectangle(initX, initY, initX, initY);
+							break;
+					}
+
+					currentPicture.setLocation(initX, initY);	
+					currentPicture.setFinalX(e.getX());
+					currentPicture.setFinalY(e.getY());
+				} else{
+//					if(e.getX()-initX<0){
+//						currentPicture.setFinalX(initX);
+//						currentPicture.setInitialX(e.getX());
+//						
+//					}else{
+//					currentPicture.setFinalX(e.getX());
+//					}					
+//					if(e.getY()-initY<0){
+//						currentPicture.setFinalY(initY);
+//						currentPicture.setInitialY(e.getY());
+//						
+//					}else{
+//					currentPicture.setFinalY(e.getY());
+//					}
+					currentPicture.setFinalX(e.getX());
+					currentPicture.setFinalY(e.getY());
+					hasClickedOnce = false;
+				}
+				pictures.add(currentPicture);
+				drawObjects(pictures);
+			}
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {
+
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseExited(MouseEvent e) {
+			// TODO Auto-generated method stub
+
+			
+		}
+	}
+	
+	
+	private class motionListener implements MouseMotionListener {
+
+		@Override
+		public void mouseDragged(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseMoved(MouseEvent e) {
+			// if the user hasn't clicked again, resize PaintObject
+			if (hasClickedOnce) {
+				currentPicture.setFinalX(e.getX());
+				currentPicture.setFinalY(e.getY());
+				drawObjects(pictures);
+			}
+		}
+	}
+	
 	// Calls repaint on a list of picture objects
 	public void drawObjects(PaintObjectList pictures) {
 		scrollPanel.setPictures(pictures);
 		scrollPanel.repaint();
 	}
+	
+	public void lockAndResizePicture() {
+		while (hasClickedOnce) {
+
+
+		}
+	}
+
 	// inner class that contains the paintComponent method that draws 
 	// the images onto the JScrollPanel
 	class DrawingPanel extends JPanel {
 		
 		private PaintObjectList pictures;
+		
+		public DrawingPanel(PaintObjectList pictures) {
+			this.pictures = pictures; 
+		}
 		
 		public void setPictures(PaintObjectList pictures){
 			this.pictures = pictures;
@@ -176,40 +345,14 @@ public class netPaintGUI extends JFrame {
 					g2.fill((Shape)underObject);
 				}
 			}
-			//System.out.print("hello");
+
 		} 
 	}
 	
 	// Programs main that add five PaintObjects with thier dimensions and prints them
 	public static void main(String [] args){
-		PaintObjectList objectList= new PaintObjectList();
-		objectList.add(new PaintLine(220,10,320,100));
-		objectList.get(0).setColor(Color.GREEN);
-		objectList.add(new PaintLine(320,10,220,100));
-		objectList.get(1).setColor(Color.GREEN);
-		objectList.add(new PaintRectangle(10,10,100,100));
-		objectList.get(2).setColor(Color.RED);
-		objectList.add(new PaintOval(350,10,450,100));
-		objectList.get(3).setColor(Color.BLUE);
-
-		try {
-			Image meme = ImageIO.read(new File("./Image/Funny-Memes.jpg"));
-			objectList.add(new PaintImage(10,110 , 200, 300,meme));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-//		for (PaintObject pic : objectList) {
-//			System.out.println(pic.getCurrentHeight());
-//		}
-
+		//PaintObjectList objectList= new PaintObjectList();
 		netPaintGUI gui = new netPaintGUI();
-		
-		gui.drawObjects(objectList);
-		
-		
-		
-	
 	}
 	
 }

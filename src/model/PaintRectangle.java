@@ -32,8 +32,27 @@ public class PaintRectangle extends PaintObject {
 
 	@Override
 	protected void updatePicture() {
-		rectangle.setLocation(getInitialX(), getInitialY());
-		rectangle.setSize(getCurrentWidth(), getCurrentHeight());
+		int initX = getInitialX();
+		int initY = getInitialY();
+		int finalX = getFinalX();
+		int finalY = getFinalY();
+		int width = Math.abs(getCurrentWidth());
+		int height = Math.abs(getCurrentHeight());
+
+		if (finalX - initX < 0) {
+			int temp = finalX;
+			finalX = initX;
+			initX = temp;
+		}
+		
+		if (finalY - initY < 0) {
+			int temp = finalY;
+			finalY = initY;
+			initY = temp;
+		}
+		
+		rectangle.setLocation(initX, initY);
+		rectangle.setSize(width, height);
 	}
 	
 	// testing
