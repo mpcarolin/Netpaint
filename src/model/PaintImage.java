@@ -15,7 +15,9 @@ import java.awt.image.BufferedImage;
 
 public class PaintImage extends PaintObject {
 	
-	Image image;
+	private Image image;
+	private boolean changeX=false;
+	private boolean changeY=false;
 
 	public PaintImage(int initialX, int initialY, int finalX, int finalY, Image image) {
 		super(initialX, initialY, finalX, finalY);
@@ -39,15 +41,21 @@ public class PaintImage extends PaintObject {
 		int height = Math.abs(getCurrentHeight());
 		
 		if (finalX - initX < 0) {
-			int temp = finalX;
-			setFinalX(initX);
-			setInitialX(temp);
+			if(!changeX){
+				int temp = finalX;
+				setFinalX(initX);
+				setInitialX(temp);
+				changeX=true;
+			}
 		}
 		
 		if (finalY - initY < 0) {
-			int temp = finalY;
-			setFinalY(initY);
-			setInitialY(temp);
+			if(!changeY){
+				int temp = finalY;
+				setFinalY(initY);
+				setInitialY(temp);
+				changeY=true;
+			}
 		}
 	}
 }
