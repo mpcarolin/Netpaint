@@ -16,8 +16,8 @@ import java.awt.image.BufferedImage;
 public class PaintImage extends PaintObject {
 	
 	private Image image;
-	private boolean changeX=false;
-	private boolean changeY=false;
+	private boolean changeX = false;
+	private boolean changeY = false;
 
 	public PaintImage(int initialX, int initialY, int finalX, int finalY, Image image) {
 		super(initialX, initialY, finalX, finalY);
@@ -31,33 +31,8 @@ public class PaintImage extends PaintObject {
 	}
 
 	@Override
-	protected void updatePicture() {
-		// use other scale constants for different algorithms for scaling (some prioritize speed)
-		int initX = getInitialX();
-		int initY = getInitialY();
-		int finalX = getFinalX();
-		int finalY = getFinalY();
-		int width = Math.abs(getCurrentWidth());
-		int height = Math.abs(getCurrentHeight());
-		
-		if (finalX - initX < 0) {
-			if(!changeX){
-				int temp = finalX;
-				setFinalX(initX);
-				setInitialX(temp);
-				changeX=true;
-			}
-		}
-		
-		if (finalY - initY < 0) {
-			if(!changeY){
-				int temp = finalY;
-				setFinalY(initY);
-				setInitialY(temp);
-				changeY=true;
-			}
-		}
-	}
+	protected void updatePicture() {}
+
 }
 
 

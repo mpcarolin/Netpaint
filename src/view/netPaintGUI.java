@@ -65,13 +65,14 @@ public class netPaintGUI extends JFrame {
 	}
 	
 	private JColorChooser colors;
-	private JRadioButton  line, rectangel, oval, image;
+	private JRadioButton  line, rectangle, oval, image;
 	private ButtonGroup   shapechoices;
 	private JPanel panel, southPanel;
 	private DrawingPanel scrollPanel;
 	private JScrollPane canvus;
 	private JButton  colorChooser;
 	private PaintObject currentPicture;
+	private Color currentColor;
 	private boolean hasClickedOnce = false;
 	private boolean skipFirst = false;
 
@@ -83,19 +84,19 @@ public class netPaintGUI extends JFrame {
 
 		// shapes and image options 
 		line			= new JRadioButton("Line");
-		rectangel = new JRadioButton("Rectangel");
+		rectangle = new JRadioButton("Rectangle");
 		oval			= new JRadioButton("Oval");
 		image		= new JRadioButton("Image");
 		
 		// set action commands so listener knows which button is selected
 		line.setActionCommand("line");
-		rectangel.setActionCommand("rectangle");
+		rectangle.setActionCommand("rectangle");
 		oval.setActionCommand("oval");
 		image.setActionCommand("image");
 		
 		// set action listeners
 		line.addActionListener(new pictureButtonListener());
-		rectangel.addActionListener(new pictureButtonListener());
+		rectangle.addActionListener(new pictureButtonListener());
 		oval.addActionListener(new pictureButtonListener());
 		image.addActionListener(new pictureButtonListener());
 		
@@ -107,8 +108,8 @@ public class netPaintGUI extends JFrame {
 		// add button listeners and actions
 		line.setSize(70, 40);
 		line.setLocation(215, 20);
-		rectangel.setSize(100, 40);
-		rectangel.setLocation(275, 20);
+		rectangle.setSize(100, 40);
+		rectangle.setLocation(275, 20);
 		oval.setSize(70, 40);
 		oval.setLocation(375, 20);
 		image.setSize(100, 40);
@@ -120,12 +121,12 @@ public class netPaintGUI extends JFrame {
 		colorChooser.addActionListener(new colorButtonListener());
 		shapechoices = new ButtonGroup();
 		shapechoices.add(line);
-		shapechoices.add(rectangel);
+		shapechoices.add(rectangle);
 		shapechoices.add(oval);
 		shapechoices.add(image);
 
 		southPanel.add(line);
-		southPanel.add(rectangel);
+		southPanel.add(rectangle);
 		southPanel.add(oval);
 		southPanel.add(image);
 		southPanel.add(colorChooser);
@@ -157,10 +158,8 @@ public class netPaintGUI extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			Color color = scrollPanel.getBackground();
-			System.out.print(color.toString());
-
 			color = JColorChooser.showDialog(null, "Choose a Color", color );
-			System.out.print(color.toString());
+			currentColor = color;
 		}
 	}
 	
@@ -171,38 +170,6 @@ public class netPaintGUI extends JFrame {
 			String receivedCommand = e.getActionCommand();
 			currentPictureString = receivedCommand;
 		}
-	}
-	
-	private class mouseClickedListener implements MouseListener {
-
-		@Override
-		public void mouseClicked(MouseEvent e) {
-		}
-
-		@Override
-		public void mousePressed(MouseEvent e) {
-			if (skipFirst) {
-				hasClickedOnce = false;
-			}
-		}
-
-		@Override
-		public void mouseReleased(MouseEvent e) {
-			skipFirst = true;
-		}
-
-		@Override
-		public void mouseEntered(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void mouseExited(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-		
 	}
 	
 	private class mouseLocationListener implements MouseListener {
@@ -228,8 +195,6 @@ public class netPaintGUI extends JFrame {
 							currentPicture = new PaintImage(initX, initY, initX, initY, imageToDraw);
 							break;
 						default: 	// if a rectangle or an unsupported option, draw a rectangle
-							// reverse initial and final x when inverting the resize
-							
 							currentPicture = new PaintRectangle(initX, initY, initX, initY);
 							break;
 					}
@@ -237,21 +202,8 @@ public class netPaintGUI extends JFrame {
 					currentPicture.setLocation(initX, initY);	
 					currentPicture.setFinalX(e.getX());
 					currentPicture.setFinalY(e.getY());
+					currentPicture.setColor(currentColor);
 				} else{
-//					if(e.getX()-initX<0){
-//						currentPicture.setFinalX(initX);
-//						currentPicture.setInitialX(e.getX());
-//						
-//					}else{
-//					currentPicture.setFinalX(e.getX());
-//					}					
-//					if(e.getY()-initY<0){
-//						currentPicture.setFinalY(initY);
-//						currentPicture.setInitialY(e.getY());
-//						
-//					}else{
-//					currentPicture.setFinalY(e.getY());
-//					}
 					currentPicture.setFinalX(e.getX());
 					currentPicture.setFinalY(e.getY());
 					hasClickedOnce = false;
@@ -309,13 +261,6 @@ public class netPaintGUI extends JFrame {
 		scrollPanel.setPictures(pictures);
 		scrollPanel.repaint();
 	}
-	
-	public void lockAndResizePicture() {
-		while (hasClickedOnce) {
-
-
-		}
-	}
 
 	// inner class that contains the paintComponent method that draws 
 	// the images onto the JScrollPanel
@@ -352,7 +297,6 @@ public class netPaintGUI extends JFrame {
 	
 	// Programs main that add five PaintObjects with thier dimensions and prints them
 	public static void main(String [] args){
-		//PaintObjectList objectList= new PaintObjectList();
 		netPaintGUI gui = new netPaintGUI();
 	}
 	
