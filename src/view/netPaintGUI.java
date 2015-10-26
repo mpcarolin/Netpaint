@@ -100,8 +100,6 @@ public class netPaintGUI extends JFrame {
 		oval.addActionListener(new pictureButtonListener());
 		image.addActionListener(new pictureButtonListener());
 		
-		
-		
 		// color chooser 
 		colorChooser= new JButton("Change Colors");
 
@@ -295,7 +293,6 @@ public class netPaintGUI extends JFrame {
 		} 
 	}
 	
-	// Programs main that add five PaintObjects with thier dimensions and prints them
 	public static void main(String [] args){
 		netPaintGUI gui = new netPaintGUI();
 	}

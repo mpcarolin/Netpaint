@@ -28,7 +28,7 @@ public abstract class PaintObject implements Serializable {
 		this.initialY 	= initialY;
 		this.finalX  	= finalX;
 		this.finalY  	= finalY;
-		color 			= Color.BLACK;	// default
+		color			= Color.BLACK;	// default
 	}
 	
 	/* ====================== Methods ========================= */
@@ -63,10 +63,12 @@ public abstract class PaintObject implements Serializable {
 	
 	public void setInitialX(int newX) {
 		initialX = newX;
+		updatePicture();
 	}
 	
 	public void setInitialY(int newY) {
 		initialY = newY;
+		updatePicture();
 	}
 	
 	public void setFinalX(int newX) {
@@ -85,6 +87,7 @@ public abstract class PaintObject implements Serializable {
 		updatePicture();
 	}
 	
+	// move entire shape, with current sizing, to a new coordinate
 	public void setLocation(int xCoordinate, int yCoordinate) {
 		// gather current dimensions
 		int width = getCurrentWidth();
