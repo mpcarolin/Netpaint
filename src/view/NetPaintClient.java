@@ -92,15 +92,7 @@ public class NetPaintClient extends JFrame {
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
-		try {
-			pictures.add((PaintObject)fromServer.readObject());
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
 	}
 
 	private JColorChooser colors;
@@ -349,9 +341,7 @@ public class NetPaintClient extends JFrame {
 		public void run() {
 			while (true) {
 				try {
-					PaintObject toAdd = (PaintObject) fromServer.readObject();
-					System.out.println(toAdd);
-					pictures.add(toAdd);
+					pictures =  (PaintObjectList) fromServer.readObject();
 					NetPaintClient.this.drawObjects(pictures);
 				} catch (ClassNotFoundException | IOException e) {
 					e.printStackTrace();

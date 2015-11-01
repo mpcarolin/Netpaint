@@ -31,6 +31,7 @@ public class PaintServer {
 			clients.add(toClient);
 			
 			PaintObjectList pics = new PaintObjectList();
+
 			
 			ClientHandler handler = new ClientHandler(fromClient, clients, pics);
 			handler.start();
@@ -48,15 +49,16 @@ class ClientHandler extends Thread {
 		this.input = fromClient;
 		this.clients = clients;
 		this.paintObjects = pics;
-
+		//writePaintListToClients(pics);
 	}
 	@Override
 	public void run(){
 		while (true){
 			try {
-				PaintObject currentObject= (PaintObject) input.readObject();
+				PaintObject currentObject = (PaintObject) input.readObject();
 				paintObjects.add(currentObject);
-				writePaintObjectToClients(currentObject);
+				//writePaintObjectToClients(currentObject);
+				writePaintListToClients(paintObjects);
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
@@ -70,6 +72,17 @@ class ClientHandler extends Thread {
 			try {
 				((ObjectOutputStream)client).writeObject(paintObject);
 				((ObjectOutputStream)client).reset();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	private void writePaintListToClients(PaintObjectList pics) {
+		for (ObjectOutputStream client : clients) {
+			try {
+				((ObjectOutputStream)client).writeObject(pics);
+				//((ObjectOutputStream)client).reset();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
