@@ -11,9 +11,10 @@
 package model;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 
 
-public class PaintImage extends PaintObject {
+public class PaintImage extends PaintObject implements Serializable {
 	
 	private Image image;
 	private boolean changeX = false;

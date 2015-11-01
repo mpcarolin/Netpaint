@@ -17,13 +17,18 @@ package model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Vector;
 
 public class PaintObjectList implements Serializable, Iterable<PaintObject> {
 	
-	private ArrayList<PaintObject> pictures = new ArrayList<PaintObject>();
+	private Vector<PaintObject> pictures = new Vector<PaintObject>();
 	
 	public PaintObject get(int index) {
 		return pictures.get(index);
+	}
+	
+	public PaintObject getLast() {
+		return pictures.get(size()-1);
 	}
 	
 	public void add(PaintObject picture) {
