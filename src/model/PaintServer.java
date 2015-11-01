@@ -45,21 +45,24 @@ public class PaintServer {
 
 	private ObjectInputStream input;
 	private List<ObjectOutputStream> clients;
-	private Vector paintObjects;
+	private Vector<PaintObject> paintObjects;
 
 	public ClientHandler(ObjectInputStream fromClient, List<ObjectOutputStream> clients, Vector<PaintObject> pics) { 
 		this.input = fromClient;
 		this.clients = clients;
 		this.paintObjects = pics;
+		writePaintListToClients(pics);	// update new client with prior pictures
 	}
 	
 	
 	@Override
 	public void run(){
+		System.out.println("Another client changes");
 		while (true){
 			try {
 				PaintObject currentObject = (PaintObject) input.readObject();
 				paintObjects.add(currentObject);
+				System.out.println("Thread pic: " + currentObject);
 				writePaintListToClients(paintObjects);
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
