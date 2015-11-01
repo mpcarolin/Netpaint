@@ -28,6 +28,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Vector;
 
 import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
@@ -341,7 +342,8 @@ public class NetPaintClient extends JFrame {
 		public void run() {
 			while (true) {
 				try {
-					pictures =  (PaintObjectList) fromServer.readObject();
+					Vector<PaintObject> serverPictures = (Vector<PaintObject>)fromServer.readObject();
+					NetPaintClient.this.pictures.setVector(serverPictures);
 					NetPaintClient.this.drawObjects(pictures);
 				} catch (ClassNotFoundException | IOException e) {
 					e.printStackTrace();

@@ -47,6 +47,10 @@ public class PaintObjectList implements Serializable, Iterable<PaintObject> {
 		return pictures.size();
 	}
 	
+	public void setVector(Vector<PaintObject> vector) {
+		pictures = vector;
+	}
+	
 	@Override
 	public Iterator<PaintObject> iterator() {
 		return new paintIterator();
