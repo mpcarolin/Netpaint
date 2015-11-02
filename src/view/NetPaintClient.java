@@ -32,6 +32,7 @@ import java.util.Vector;
 
 import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
 import javax.swing.JFrame;
@@ -62,6 +63,7 @@ public class NetPaintClient extends JFrame {
 	private PaintObjectList pictures = new PaintObjectList();
 	private Image imageToDraw;
 	private String currentPictureString = "";
+	private volatile ImageIcon imageWrapper;
 
 
 	public NetPaintClient() throws UnknownHostException, IOException {
@@ -73,6 +75,7 @@ public class NetPaintClient extends JFrame {
 		// obtain the picture for the image option
 		try {
 			imageToDraw = ImageIO.read(new File("./Image/Funny-Memes.jpg"));
+			imageWrapper= new ImageIcon(imageToDraw);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -222,7 +225,7 @@ public class NetPaintClient extends JFrame {
 							currentPicture = new PaintOval(initX, initY, initX, initY);
 							break;
 						case "image":
-							currentPicture = new PaintImage(initX, initY, initX, initY, imageToDraw);
+							currentPicture = new PaintImage(initX, initY, initX, initY, imageWrapper);
 							break;
 						default: 	// if a rectangle or an unsupported option, draw a rectangle
 							currentPicture = new PaintRectangle(initX, initY, initX, initY);
@@ -324,8 +327,9 @@ public class NetPaintClient extends JFrame {
 			for (PaintObject picture : pictures) {
 				Object underObject = picture.getPicture();
 				g2.setColor(picture.getColor());
-				if (underObject instanceof Image) {
-					g2.drawImage((Image)underObject, picture.getInitialX(), picture.getInitialY(), 
+				if (underObject instanceof ImageIcon) {
+					ImageIcon underObjectImage= (ImageIcon) underObject;
+					g2.drawImage((Image)underObjectImage.getImage(), picture.getInitialX(), picture.getInitialY(), 
 											picture.getCurrentWidth(), picture.getCurrentHeight(),  null);
 				} else if (underObject instanceof Line2D) {
 					g2.draw((Shape)underObject);
