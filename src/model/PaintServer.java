@@ -60,29 +60,37 @@ public class PaintServer {
 		System.out.println("Another client changes");
 		while (true){
 			try {
-				PaintObject currentObject = (PaintObject) input.readObject();
-				paintObjects.add(currentObject);
-				System.out.println("Thread pic: " + currentObject);
-				writePaintListToClients(paintObjects);
+				Object test= input.readObject();
+				if(test instanceof Vector<?>){
+					paintObjects= (Vector<PaintObject>) test;
+					writePaintListToClients(paintObjects);
+				}else{
+					PaintObject currentObject = (PaintObject) test;
+					paintObjects.add(currentObject);
+					//System.out.println("Thread pic: " + currentObject);
+					writePaintListToClients(paintObjects);
+				}
 			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
+				//e.printStackTrace();
+				return;
 			} catch (IOException e) {
-				e.printStackTrace();
+				//e.printStackTrace();
+				return;
 			}
 		}
 	}
 
-	// writes all of the paintObjects currently stored by the server to all clients
-	private void writePaintObjectToClients(PaintObject paintObject) {
-		for (ObjectOutputStream client : clients) {
-			try {
-				((ObjectOutputStream)client).writeObject(paintObject);
-				((ObjectOutputStream)client).reset();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
+//	// writes all of the paintObjects currently stored by the server to all clients
+//	private void writePaintObjectToClients(PaintObject paintObject) {
+//		for (ObjectOutputStream client : clients) {
+//			try {
+//				((ObjectOutputStream)client).writeObject(paintObject);
+//				((ObjectOutputStream)client).reset();
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
+//		}
+//	}
 
 	private void writePaintListToClients(Vector<PaintObject> pics) {
 		for (ObjectOutputStream client : clients) {
